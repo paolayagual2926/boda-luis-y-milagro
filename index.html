@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda | Luis & Milagro</title>
+    
+    <!-- Etiquetas para vista previa limpia al compartir el enlace -->
+    <meta property="og:title" content="¡Nos Casamos! Luis & Milagro">
+    <meta property="og:description" content="Sábado 26 de Diciembre • Te invitamos a celebrar con nosotros.">
+
+    <!-- Tipografías de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-sand: #F9F6F0;
+            --card-bg: #FFFFFF;
+            --text-main: #243B4A;
+            --text-muted: #5F7380;
+            --accent: #3A7D8C;
+            --accent-sand: #C5A880;
+            --accent-light: rgba(58, 125, 140, 0.2);
+            --accent-hover: #2C626E;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-sand);
+            color: var(--text-main);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+        }
+
+        /* Portada */
+        .hero {
+            min-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3.5rem 1.5rem;
+            background: linear-gradient(180deg, #EDF4F5 0%, var(--bg-sand) 100%);
+        }
+
+        /* Monograma con iniciales */
+        .monogram {
+            width: 95px;
+            height: 95px;
+            border: 1px solid var(--accent-sand);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.8rem;
+            position: relative;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            color: var(--accent);
+            letter-spacing: 2px;
+            background-color: var(--card-bg);
+            box-shadow: 0 6px 20px rgba(36, 59, 74, 0.06);
+        }
+
+        .monogram::after {
+            content: '';
+            position: absolute;
+            inset: 5px;
+            border: 1px solid rgba(197, 168, 128, 0.35);
+            border-radius: 50%;
+        }
+
+        .subtitle {
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 1.2rem;
+            font-weight: 500;
+        }
+
+        .names {
+            font-size: clamp(3.2rem, 8vw, 5.2rem);
+            color: var(--text-main);
+            line-height: 1.05;
+            margin-bottom: 1.5rem;
+        }
+
+        .names span {
+            display: block;
+            font-style: italic;
+            color: var(--accent-sand);
+            font-size: 0.55em;
+            margin: 0.2rem 0;
+        }
+
+        .date-banner {
+            margin-top: 1rem;
+            padding: 0.7rem 2.2rem;
+            border-top: 1px solid var(--accent-sand);
+            border-bottom: 1px solid var(--accent-sand);
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            background-color: rgba(255, 255, 255, 0.75);
+        }
+
+        /* Ornamento divisor */
+        .divider {
+            margin: 2.5rem auto;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            height: 1px;
+            width: 55px;
+            background-color: var(--accent-light);
+        }
+
+        /* Contenedor general */
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.55rem;
+            color: var(--text-muted);
+            max-width: 580px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Cuenta regresiva */
+        .countdown-section {
+            margin-bottom: 3.5rem;
+        }
+
+        .countdown-title {
+            font-size: 1.9rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .time-box {
+            background: var(--card-bg);
+            padding: 1.1rem 0.8rem;
+            min-width: 76px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(36, 59, 74, 0.04);
+            border: 1px solid var(--accent-light);
+        }
+
+        .time-box span {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.3rem;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .time-box small {
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        /* Tarjeta única centralizada para Ceremonia y Recepción */
+        .single-card {
+            background: var(--card-bg);
+            padding: 2.6rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(36, 59, 74, 0.04);
+            border: 1px solid var(--accent-light);
+            margin-bottom: 3rem;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .single-card h3 {
+            font-size: 1.9rem;
+            color: var(--accent);
+            margin-bottom: 0.8rem;
+        }
+
+        .single-card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        /* Destacado Código de Vestimenta */
+        .dress-badge {
+            display: inline-block;
+            margin: 0.8rem 0;
+            padding: 0.45rem 1.4rem;
+            background-color: #F4F8F9;
+            border: 1px solid var(--accent);
+            border-radius: 30px;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.85rem 2rem;
+            background-color: var(--accent);
+            color: #FFF;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Caja de RSVP y campos del formulario */
+        .rsvp-box {
+            background: var(--card-bg);
+            padding: 2.8rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--accent-light);
+            box-shadow: 0 4px 20px rgba(36, 59, 74, 0.04);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .rsvp-form {
+            max-width: 380px;
+            margin: 1.5rem auto 0;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 0.35rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(58, 125, 140, 0.35);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            background-color: #FAF9F6;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--accent);
+            background-color: #FFFFFF;
+        }
+
+        footer {
+            padding: 2.5rem 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PORTADA -->
+    <header class="hero">
+        <div class="monogram">L &amp; M</div>
+
+        <p class="subtitle">¡Nos Casamos!</p>
+        <h1 class="names">
+            Luis
+            <span>&amp;</span>
+            Milagro
+        </h1>
+        <div class="date-banner">
+            SÁBADO • 26 DE DICIEMBRE • 2026
+        </div>
+    </header>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container">
+        
+        <p class="quote">
+            "El amor verdadero no se trata de encontrar a alguien con quien vivir, sino de encontrar a alguien sin quien no puedas imaginar la vida."
+        </p>
+
+        <!-- Divisor ornamental -->
+        <div class="divider">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"/>
+            </svg>
+        </div>
+
+        <!-- CUENTA REGRESIVA -->
+        <section class="countdown-section">
+            <h2 class="countdown-title">Solo faltan</h2>
+            <div class="countdown">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <small>Días</small>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <small>Horas</small>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <small>Min</small>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <small>Seg</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- CEREMONIA Y RECEPCIÓN -->
+        <section class="single-card">
+            <h3>Ceremonia y Recepción</h3>
+            <p><strong>4:00 PM</strong></p>
+            <p>Urbanización Puerto Encantado, La Quinta Playera</p>
+            <p>Higuerote</p>
+            <a href="https://maps.app.goo.gl/Gwxmy3dCkzm6SavdA" target="_blank" class="btn">Ver Ubicación en Google Maps</a>
+        </section>
+
+        <!-- CÓDIGO DE VESTIMENTA Y CONFIRMACIÓN -->
+        <section class="rsvp-box">
+            <h2 style="font-size: 2rem; margin-bottom: 0.4rem;">Código de Vestimenta</h2>
+            <div class="dress-badge">Color Blanco • Formal / Semiformal</div>
+            <p style="color: var(--text-muted); font-size: 0.92rem; max-width: 480px; margin: 0.5rem auto 2rem;">
+                Agradecemos asistir vestidos de color blanco.
+            </p>
+
+            <hr style="border: 0; border-top: 1px solid var(--accent-light); margin-bottom: 2rem;">
+
+            <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Confirma tu Asistencia</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Indícanos tu nombre y cuántas personas asistirán antes del 10 de diciembre.
+            </p>
+            
+            <form class="rsvp-form" onsubmit="enviarWhatsApp(event)">
+                <div class="form-group">
+                    <label for="guestName">Nombre y Apellido</label>
+                    <input type="text" id="guestName" class="form-control" placeholder="Ej. María Pérez" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="guestCount">Cantidad de personas</label>
+                    <select id="guestCount" class="form-control" required>
+                        <option value="1 persona">1 persona (Solo yo)</option>
+                        <option value="2 personas">2 personas</option>
+                        <option value="3 personas">3 personas</option>
+                        <option value="4 personas">4 personas</option>
+                        <option value="5 personas">5 personas</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">
+                    Confirmar por WhatsApp
+                </button>
+            </form>
+        </section>
+
+    </main>
+
+    <footer>
+        Con cariño, Luis &amp; Milagro • 2026
+    </footer>
+
+    <!-- JAVASCRIPT: CUENTA REGRESIVA Y WHATSAPP -->
+    <script>
+        // 1. Cuenta regresiva
+        const weddingDate = new Date("2026-12-26T16:00:00").getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.querySelector(".countdown").innerHTML = "<p class='serif' style='font-size:1.5rem;'>¡Hoy celebramos nuestra boda!</p>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+        }, 1000);
+
+        // 2. Envío personalizado a WhatsApp
+        function enviarWhatsApp(event) {
+            event.preventDefault();
+
+            // CAMBIA ESTE NÚMERO POR EL TELÉFONO REAL (sin el +, con código de país)
+            const telefono = "584120000000"; 
+
+            const nombre = document.getElementById("guestName").value.trim();
+            const cantidad = document.getElementById("guestCount").value;
+
+            const mensaje = `¡Hola! Confirmo con mucha alegría mi asistencia a la boda de Luis y Milagro.\n\n*Nombre:* ${nombre}\n*Asistentes:* ${cantidad}`;
+            const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
+
+            window.open(url, "_blank");
+        }
+    </script>
+
+</body>
+</html>
