@@ -45,7 +45,81 @@
             font-weight: 400;
         }
 
-        /* Portada */
+        /* PANTALLA DE BIENVENIDA (ENTRY OVERLAY) */
+        #welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #243B4A 0%, #1A2E3B 100%);
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 2rem;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        #welcome-overlay.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .welcome-monogram {
+            width: 110px;
+            height: 110px;
+            border: 1px solid var(--accent-sand);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--accent-sand);
+            letter-spacing: 3px;
+        }
+
+        .welcome-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-family: 'Cormorant Garamond', serif;
+            margin-bottom: 0.5rem;
+            color: #FFF;
+        }
+
+        .welcome-subtitle {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--accent-sand);
+            margin-bottom: 2.5rem;
+        }
+
+        .btn-enter {
+            padding: 0.9rem 2.5rem;
+            background-color: var(--accent-sand);
+            color: #243B4A;
+            border: none;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-enter:hover {
+            background-color: #D6BD96;
+            transform: translateY(-2px);
+        }
+
+        /* Portada Principal */
         .hero {
             min-height: 85vh;
             display: flex;
@@ -347,14 +421,24 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR DE MÚSICA INSTRUMENTAL ROMÁNTICA -->
-    <audio id="bgMusic" loop preload="auto">
-        <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_1822015808.mp3?filename=romantic-piano-110212.mp3" type="audio/mpeg">
-    </audio>
+    <!-- PANTALLA DE BIENVENIDA (ACTIVA LA MÚSICA AL ENTRAR) -->
+    <div id="welcome-overlay">
+        <div class="welcome-monogram">L &amp; M</div>
+        <p class="welcome-subtitle">Nuestra Boda</p>
+        <h1 class="welcome-title">Luis &amp; Milagro</h1>
+        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 2rem;">26 de Diciembre de 2026</p>
+        <button class="btn-enter" onclick="openInvitation()">Abrir Invitación</button>
+    </div>
 
-    <button id="musicBtn" class="music-control" onclick="toggleMusic()" aria-label="Reproducir o pausar música">
-        <span id="musicIcon">▶</span>
-        <span id="musicText">Música</span>
+    <!-- REPRODUCTOR DE YOUTUBE OCULTO PARA LA MÚSICA -->
+    <div style="display:none;">
+        <iframe id="youtubePlayer" width="0" height="0" src="" title="Un Amor Eterno - Marc Anthony" frameborder="0" allow="autoplay"></iframe>
+    </div>
+
+    <!-- BOTÓN FLOTANTE DE MÚSICA -->
+    <button id="musicBtn" class="music-control" onclick="toggleMusic()" aria-label="Reproducir o pausar música" style="display: none;">
+        <span id="musicIcon">❚❚</span>
+        <span id="musicText">Pausar</span>
     </button>
 
     <!-- PORTADA -->
@@ -466,21 +550,36 @@
 
     <!-- JAVASCRIPT: MÚSICA, CUENTA REGRESIVA Y WHATSAPP -->
     <script>
-        // 1. Control de música
-        const bgMusic = document.getElementById("bgMusic");
-        const musicBtn = document.getElementById("musicBtn");
-        const musicIcon = document.getElementById("musicIcon");
-        const musicText = document.getElementById("musicText");
-        let isPlaying = false;
+        // 1. Abrir invitación y activar música de YouTube al instante
+        function openInvitation() {
+            const overlay = document.getElementById("welcome-overlay");
+            overlay.classList.add("fade-out");
 
+            // Carga e inicia la canción "Un Amor Eterno" de Marc Anthony (bkHhMpPGf0Q)
+            const iframe = document.getElementById("youtubePlayer");
+            iframe.src = "https://www.youtube.com/embed/bkHhMpPGf0Q?autoplay=1&loop=1&playlist=bkHhMpPGf0Q";
+
+            // Muestra el botón flotante de música
+            document.getElementById("musicBtn").style.display = "flex";
+        }
+
+        // 2. Control de música (Pausar / Reproducir)
+        let isPlaying = true;
         function toggleMusic() {
+            const iframe = document.getElementById("youtubePlayer");
+            const musicBtn = document.getElementById("musicBtn");
+            const musicIcon = document.getElementById("musicIcon");
+            const musicText = document.getElementById("musicText");
+
             if (isPlaying) {
-                bgMusic.pause();
+                // Pausa quitando el autoplay
+                iframe.src = "";
                 musicIcon.innerText = "▶";
                 musicText.innerText = "Música";
                 musicBtn.classList.remove("playing");
             } else {
-                bgMusic.play();
+                // Vuelve a reproducir
+                iframe.src = "https://www.youtube.com/embed/bkHhMpPGf0Q?autoplay=1&loop=1&playlist=bkHhMpPGf0Q";
                 musicIcon.innerText = "❚❚";
                 musicText.innerText = "Pausar";
                 musicBtn.classList.add("playing");
@@ -488,7 +587,7 @@
             isPlaying = !isPlaying;
         }
 
-        // 2. Mostrar u ocultar el segundo nombre según cantidad de personas
+        // 3. Mostrar u ocultar el segundo nombre según cantidad de personas
         function toggleAcompanante() {
             const count = document.getElementById("guestCount").value;
             const companionGroup = document.getElementById("companionGroup");
@@ -504,7 +603,7 @@
             }
         }
 
-        // 3. Cuenta regresiva
+        // 4. Cuenta regresiva
         const weddingDate = new Date("2026-12-26T16:00:00").getTime();
 
         const timer = setInterval(function() {
@@ -528,11 +627,11 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // 4. Envío personalizado a WhatsApp
+        // 5. Envío personalizado a WhatsApp (1 o 2 personas)
         function enviarWhatsApp(event) {
             event.preventDefault();
 
-            const telefono = "584120365777";
+            const telefono = "584129140846";
             const count = document.getElementById("guestCount").value;
             const nombre1 = document.getElementById("guestName1").value.trim();
             const nombre2 = document.getElementById("guestName2").value.trim();
