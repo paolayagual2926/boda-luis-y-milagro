@@ -303,8 +303,42 @@
             background-color: #FFFFFF;
         }
 
+        /* Botón flotante de música */
+        .music-control {
+            position: fixed;
+            bottom: 22px;
+            right: 22px;
+            z-index: 1000;
+            background-color: var(--card-bg);
+            color: var(--accent);
+            border: 1px solid var(--accent-sand);
+            border-radius: 50px;
+            padding: 0.65rem 1.15rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(36, 59, 74, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            background-color: var(--accent);
+            color: #FFF;
+            border-color: var(--accent);
+        }
+
+        .music-control.playing {
+            background-color: var(--accent);
+            color: #FFF;
+        }
+
         footer {
-            padding: 2.5rem 1rem;
+            padding: 2.5rem 1rem 4.5rem;
             font-size: 0.8rem;
             letter-spacing: 1px;
             color: var(--text-muted);
@@ -312,6 +346,16 @@
     </style>
 </head>
 <body>
+
+    <!-- REPRODUCTOR DE MÚSICA INSTRUMENTAL ROMÁNTICA -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_1822015808.mp3?filename=romantic-piano-110212.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="musicBtn" class="music-control" onclick="toggleMusic()" aria-label="Reproducir o pausar música">
+        <span id="musicIcon">▶</span>
+        <span id="musicText">Música</span>
+    </button>
 
     <!-- PORTADA -->
     <header class="hero">
@@ -386,24 +430,26 @@
 
             <h2 style="font-size: 2rem; margin-bottom: 0.5rem;">Confirma tu Asistencia</h2>
             <p style="color: var(--text-muted); font-size: 0.9rem;">
-                Indícanos tu nombre y cuántas personas asistirán antes del 10 de diciembre.
+                Por favor confírmanos antes del 10 de diciembre.
             </p>
             
             <form class="rsvp-form" onsubmit="enviarWhatsApp(event)">
                 <div class="form-group">
-                    <label for="guestName">Nombre y Apellido</label>
-                    <input type="text" id="guestName" class="form-control" placeholder="Ej. María Pérez" required>
+                    <label for="guestCount">Cantidad de personas</label>
+                    <select id="guestCount" class="form-control" onchange="toggleAcompanante()" required>
+                        <option value="1">1 persona (Solo yo)</option>
+                        <option value="2">2 personas (Con acompañante)</option>
+                    </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="guestCount">Cantidad de personas</label>
-                    <select id="guestCount" class="form-control" required>
-                        <option value="1 persona">1 persona (Solo yo)</option>
-                        <option value="2 personas">2 personas</option>
-                        <option value="3 personas">3 personas</option>
-                        <option value="4 personas">4 personas</option>
-                        <option value="5 personas">5 personas</option>
-                    </select>
+                    <label for="guestName1">Nombre y Apellido (Invitado 1)</label>
+                    <input type="text" id="guestName1" class="form-control" placeholder="Ej. María Pérez" required>
+                </div>
+
+                <div class="form-group" id="companionGroup" style="display: none;">
+                    <label for="guestName2">Nombre y Apellido (Invitado 2)</label>
+                    <input type="text" id="guestName2" class="form-control" placeholder="Ej. Carlos Gómez">
                 </div>
 
                 <button type="submit" class="btn" style="width: 100%;">
@@ -418,9 +464,47 @@
         Con cariño, Luis &amp; Milagro • 2026
     </footer>
 
-    <!-- JAVASCRIPT: CUENTA REGRESIVA Y WHATSAPP -->
+    <!-- JAVASCRIPT: MÚSICA, CUENTA REGRESIVA Y WHATSAPP -->
     <script>
-        // 1. Cuenta regresiva
+        // 1. Control de música
+        const bgMusic = document.getElementById("bgMusic");
+        const musicBtn = document.getElementById("musicBtn");
+        const musicIcon = document.getElementById("musicIcon");
+        const musicText = document.getElementById("musicText");
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicIcon.innerText = "▶";
+                musicText.innerText = "Música";
+                musicBtn.classList.remove("playing");
+            } else {
+                bgMusic.play();
+                musicIcon.innerText = "❚❚";
+                musicText.innerText = "Pausar";
+                musicBtn.classList.add("playing");
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // 2. Mostrar u ocultar el segundo nombre según cantidad de personas
+        function toggleAcompanante() {
+            const count = document.getElementById("guestCount").value;
+            const companionGroup = document.getElementById("companionGroup");
+            const guestName2 = document.getElementById("guestName2");
+
+            if (count === "2") {
+                companionGroup.style.display = "block";
+                guestName2.required = true;
+            } else {
+                companionGroup.style.display = "none";
+                guestName2.required = false;
+                guestName2.value = "";
+            }
+        }
+
+        // 3. Cuenta regresiva
         const weddingDate = new Date("2026-12-26T16:00:00").getTime();
 
         const timer = setInterval(function() {
@@ -444,19 +528,24 @@
             document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
         }, 1000);
 
-        // 2. Envío personalizado a WhatsApp
+        // 4. Envío personalizado a WhatsApp
         function enviarWhatsApp(event) {
             event.preventDefault();
 
-            // CAMBIA ESTE NÚMERO POR EL TELÉFONO REAL (sin el +, con código de país)
-            const telefono = "584129140846"; 
+            const telefono = "584120365777";
+            const count = document.getElementById("guestCount").value;
+            const nombre1 = document.getElementById("guestName1").value.trim();
+            const nombre2 = document.getElementById("guestName2").value.trim();
 
-            const nombre = document.getElementById("guestName").value.trim();
-            const cantidad = document.getElementById("guestCount").value;
+            let mensaje = `¡Hola! Confirmo con mucha alegría nuestra asistencia a la boda de Luis y Milagro.\n\n`;
 
-            const mensaje = `¡Hola! Confirmo con mucha alegría mi asistencia a la boda de Luis y Milagro.\n\n*Nombre:* ${nombre}\n*Asistentes:* ${cantidad}`;
+            if (count === "2") {
+                mensaje += `*Asistentes (2 personas):*\n1. ${nombre1}\n2. ${nombre2}`;
+            } else {
+                mensaje = `¡Hola! Confirmo con mucha alegría mi asistencia a la boda de Luis y Milagro.\n\n*Asistente (1 persona):* ${nombre1}`;
+            }
+
             const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
-
             window.open(url, "_blank");
         }
     </script>
